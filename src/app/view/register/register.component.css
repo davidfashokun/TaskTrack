@@ -1,0 +1,19 @@
+.card{
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 90px;
+    text-align: center;
+}
+.example-full-width {
+    padding: 10pt;
+}
+mat-card-header {
+    justify-content: center;
+    margin-top: 8px;
+  }
+  
+  mat-card-actions {
+    justify-content: center;
+    padding: 20pt;
+  }
