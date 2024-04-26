@@ -1,1 +1,12 @@
-<p>todolist works!</p>
+<h2>Public Todo Lists</h2>
+
+<div>
+  <div *ngFor="let list of todoLists">
+    <div>
+      <h4>Title: {{ list.title }}</h4>
+      <p>Created by: {{ list.created_by }}</p>
+      <!-- Add more details as needed -->
+    </div>
+    <hr>
+  </div>
+</div>

@@ -13,7 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 export class TodolistComponent implements OnInit{
   
   currentUser : UserInfo | null = null;
-  todoLists : Todolist | null = null;
+  todoLists : Todolist[]=[];
   loggedIn:string='';
 
   constructor(private authSvc:AuthSvcService, private dialog:MatDialog){
@@ -21,7 +21,7 @@ export class TodolistComponent implements OnInit{
   }
   
   async ngOnInit(): Promise<void> {
-    let currentUser = this.authSvc.GetCurrentUser();
+    this.currentUser = await this.authSvc.GetCurrentUser();
     //this.todoLists = this.authSvc.currentTodoList
 
     let lists = await this.authSvc.GetTodoLists()
@@ -33,8 +33,8 @@ export class TodolistComponent implements OnInit{
     
     const dialogRef = this.dialog.open(NewItemComponent, {
       data: {
-        list: this.todoLists.title,
-        list_id: this.todoLists.id,
+        list: this.todoLists[0]?.title,
+        list_id: this.todoLists[0]?.id,
       }
     });
   }  

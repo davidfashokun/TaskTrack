@@ -87,16 +87,7 @@ export class AuthSvcService {
   SetCurrentUser(newUser:UserInfo){
     this.currentUser = newUser;
   }
-  async GetTodoLists() {
-    try {
-      // let userInfo = await firstValueFrom(this.httpClient.get<Todolist>('https://unfwfspring2024.azurewebsites.net/todo/',{headers:{'Authorization':`Bearer ${this.currentUserToken?.token}`}}))
-      let lists = await firstValueFrom(this.httpClient.get<Todolist[]>('https://unfwfspring2024.azurewebsites.net/todo/'))
-      return lists;
-    } catch(err: any){
-      this._snackBar.open(`Error getting todoLists ${err.error.status}-${err.error.message}`,'Close',{verticalPosition:'bottom', duration:3000});
-      return firstValueFrom(of(null))
-    }
-  }
+  
   async AddNewList(newListTitle:string,newListPublic_List:boolean) {
     try {
       let listData = {
@@ -112,7 +103,29 @@ export class AuthSvcService {
       return firstValueFrom(of(null))
     }
   }
+  async GetTodoLists() {
+    try {
+      // let userInfo = await firstValueFrom(this.httpClient.get<Todolist>('https://unfwfspring2024.azurewebsites.net/todo/',{headers:{'Authorization':`Bearer ${this.currentUserToken?.token}`}}))
+      // if(this.currentUserToken){
+      let lists = await firstValueFrom(this.httpClient.get<Todolist[]>('https://unfwfspring2024.azurewebsites.net/todo/'))
+      return lists;
+      
+      // else{
+      //   return firstValueFrom(of(null))
+      // }
+    } catch(err: any){
+      this._snackBar.open(`Error getting todoLists ${err.error.status}-${err.error.message}`,'Close',{verticalPosition:'bottom', duration:3000});
+      return firstValueFrom(of(null))
+    }
+  }
   
+  // async getPublicLists(): Promise<Todolist[]> {
+  //   let allLists = await this.GetTodoLists();
+  //   let publicLists = allLists?.filter(list=>list.public_list==true)
+
+  //   return publicLists;
+  //   //return allLists.filter(list => list.public_list);
+  // }
   logout() {
     localStorage.removeItem('currentUserToken');
     this.currentUserToken = null;
