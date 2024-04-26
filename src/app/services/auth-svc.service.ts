@@ -11,7 +11,6 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class AuthSvcService {
-  todoLists: Todolist|null=null;
 
   constructor(private httpClient: HttpClient, private _snackBar: MatSnackBar, private router:Router) { 
     let storedToken = localStorage.getItem("currentUserToken");
@@ -25,6 +24,7 @@ export class AuthSvcService {
   currentUser: UserInfo|null=null;
   //Still skeptical about this below:
   currentTodoList:Todolist|null=null;
+  todoLists: Todolist[]=[]
   activeLogin:EventEmitter<boolean>=new EventEmitter<boolean>();
   async LoginUser(email:string, password:string)
   {
@@ -95,7 +95,7 @@ export class AuthSvcService {
         public_list:newListPublic_List
       }
         let newList = await firstValueFrom(this.httpClient.post<Todolist>('https://unfwfspring2024.azurewebsites.net/todo/',listData,{headers:{'Authorization':`Bearer ${this.currentUserToken?.token}`}}))
-        //this.todoLists.push(newList);
+        this.todoLists.push(newList);
         return newList;
         
     } catch(err:any){
@@ -108,7 +108,10 @@ export class AuthSvcService {
       // let userInfo = await firstValueFrom(this.httpClient.get<Todolist>('https://unfwfspring2024.azurewebsites.net/todo/',{headers:{'Authorization':`Bearer ${this.currentUserToken?.token}`}}))
       // if(this.currentUserToken){
       let lists = await firstValueFrom(this.httpClient.get<Todolist[]>('https://unfwfspring2024.azurewebsites.net/todo/'))
-      return lists;
+      for (let row of lists) {
+        this.todoLists.push(row)
+      }
+      return this.todoLists;
       
       // else{
       //   return firstValueFrom(of(null))
@@ -119,13 +122,13 @@ export class AuthSvcService {
     }
   }
   
-  // async getPublicLists(): Promise<Todolist[]> {
-  //   let allLists = await this.GetTodoLists();
-  //   let publicLists = allLists?.filter(list=>list.public_list==true)
+  async getPublicLists(): Promise<Todolist[] | undefined> {
+    let allLists = await this.GetTodoLists();
+    let publicLists = allLists?.filter(list=>list.public_list==true)
 
-  //   return publicLists;
-  //   //return allLists.filter(list => list.public_list);
-  // }
+    return publicLists;
+  }
+  
   logout() {
     localStorage.removeItem('currentUserToken');
     this.currentUserToken = null;

@@ -21,6 +21,9 @@ export class NavbarComponent {
     this.authSvc.UserLoggedIn.subscribe(()=>{
       this.authSvc.GetCurrentUser().then((data:UserInfo|null)=>{
         this.loggedInUserName = data;
+
+        if(data)
+        this.authSvc.SetCurrentUser(data);
       });
 
       this.authSvc.activeLogin.subscribe((loggedIn)=>{

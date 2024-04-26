@@ -14,18 +14,20 @@ export class TodolistComponent implements OnInit{
   
   currentUser : UserInfo | null = null;
   todoLists : Todolist[]=[];
-  loggedIn:string='';
 
   constructor(private authSvc:AuthSvcService, private dialog:MatDialog){
 
   }
   
   async ngOnInit(): Promise<void> {
-    this.currentUser = await this.authSvc.GetCurrentUser();
+    //this.currentUser = await this.authSvc.GetCurrentUser();
     //this.todoLists = this.authSvc.currentTodoList
 
-    let lists = await this.authSvc.GetTodoLists()
+    let lists = await this.authSvc.getPublicLists()
+    // this.todoLists = this.authSvc.GetTodoLists()
     console.log(lists);
+    if (lists)
+      this.todoLists = lists
   }
   
   addItem() {
@@ -37,6 +39,9 @@ export class TodolistComponent implements OnInit{
         list_id: this.todoLists[0]?.id,
       }
     });
-  }  
+  } 
+  getListById(){
+    console.log("You have clicked this list")
+  } 
 
 }
