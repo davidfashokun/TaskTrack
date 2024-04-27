@@ -1,1 +1,17 @@
-<p>sharedlist works!</p>
+<mat-progress-bar color="accent" *ngIf="lists.length==0" mode="indeterminate"></mat-progress-bar>
+<h2 class="shared-list-header">{{this.currentUser?.name}}'s Shared Lists</h2>
+<hr>
+<!-- (click)="getListById(list.id)" -->
+<div>
+  <div *ngFor="let list of lists">
+    <mat-nav-list class="my-list-content">
+            <mat-list-item>
+                    <h4>{{ list.title }}<button (click)="openNewItemDialog(list.id)" matTooltip="Add Item" mat-icon-button><mat-icon>add_circle</mat-icon></button>
+                      <button matTooltip="Delete Item" mat-icon-button><mat-icon>delete</mat-icon></button>
+                    </h4>
+                    <h4>{{list.list_items}}</h4>
+        </mat-list-item>
+</mat-nav-list>
+    <mat-divider></mat-divider>
+  </div>
+</div>

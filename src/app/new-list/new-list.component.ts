@@ -12,6 +12,7 @@ export class NewListComponent {
 
   title:string='';
   isPublic=true;
+  titleInputFilled: boolean = false;
 
   constructor(private authSvc:AuthSvcService, private dialog:MatDialog){
 

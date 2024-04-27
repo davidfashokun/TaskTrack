@@ -26,12 +26,9 @@ export class MylistComponent {
   async ngOnInit(): Promise<void> {
 
    this.currentUser = await this.authSvc.GetCurrentUser();
-    //this.todoLists = this.authSvc.currentTodoList
-  // this.loggedIn = this.authSvc.activeLogin
 
-  //IF THIS IS THE CURRENT USER, LOGGED IN USER, SHOW MY LISTS.
   try {
-  if(this.authSvc.UserLoggedIn){
+  if(this.authSvc.UserLoggedIn && this.currentUser){
     let lists = await this.authSvc.getMyLists()
     // this.todoLists = this.authSvc.GetTodoLists()
     console.log(lists);
@@ -62,28 +59,23 @@ export class MylistComponent {
       this.snackbar.open('You must be logged in to delete a list', 'Close', { duration: 3000 });
     }
   }
-  addItemListById(list_id: number) {
-    const list = this.myLists.find(l => l.id === list_id);
-    if (list) {
+  openNewItemDialog(list_id: number) {
+    const listFound = this.myLists.find(l => l.id === list_id);
+    if (listFound) {
+      console.log('Received listId from mylist:', list_id);
       const dialogRef = this.dialog.open(TodoListDialogComponent, {
-        data: { list }
+        width:'300px',
+        data: { list_id }
+      
       });
+      //USED THE HELP OF CLAUDE.AI FOR THIS
+      dialogRef.componentInstance.list_id = list_id;
+    } else {
+      this.snackbar.open('List not found','Close');
     }
   }
-  //  addItem(list_id:number,itemtask:string,taskDue:string){
-  //   if(this.authSvc.UserLoggedIn){
-  //     this.authSvc.addNewItem(list_id,this.task,this.due_date)
-  //   }
-  //   else {
-  //     this.snackbar.open('You are not logged in','Close')
-  //   }
-  // }
+
   getListById(list_id:number) {
     console.log("You want to view this list")
-  }
-  openNewItemDialog(): void {
-    this.dialog.open(TodoListDialogComponent, {
-      width: '300px',
-    });
   }
 }

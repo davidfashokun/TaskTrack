@@ -1,3 +1,4 @@
+import { ShareTodoList } from "./share-todo-list";
 import { Todolistitem } from "./todolistitem";
 
 export interface Todolist {
@@ -7,5 +8,5 @@ export interface Todolist {
     public_list:boolean;
     created_by:number;
     list_items:Todolistitem[];
-    shared_with:[]
+    shared_with:ShareTodoList[]
 }

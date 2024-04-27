@@ -1,8 +1,8 @@
-<h2 mat-dialog-title>{{ list.title }}</h2>
+<h2 mat-dialog-title>Add New Item</h2>
 <mat-dialog-content>
   <mat-form-field>
     <mat-label>Add Item</mat-label>
-    <input matInput [(ngModel)]="task" />
+    <input matInput [(ngModel)]="task" (ngModelChange)="taskInputFilled = !!task"/>
   </mat-form-field>
   <br>
   <mat-form-field>
@@ -15,7 +15,7 @@
 </mat-dialog-content>
 <mat-dialog-actions>
   <!-- <button mat-button (click)="addItem(list.id,task,due_date)">Add Item</button> -->
-  <button mat-button (click)="addItem(list.id,task,due_date)">Add Item</button>
-  <button mat-button (click)="editList()">Edit List</button>
+  <button mat-button (click)="addItem()"[disabled]="!taskInputFilled">Add Item</button>
+  <!-- <button mat-button (click)="editList()">Edit List</button> -->
   <button mat-button mat-dialog-close>Close</button>
 </mat-dialog-actions>

@@ -20,7 +20,7 @@
         <mat-icon>person_add</mat-icon>
         </button>
         <!-- FIGURE OUT HOW TO IMPLEMENT IF USER IS LOGGED IN, REMOVE LOGIN ICON -->
-      <button *ngIf="!loggedInUserName" [routerLink]="['/login']" matTooltip="Click here to login" mat-icon-button class="example-icon" aria-label="icon-button with login icon">
+      <button *ngIf="!loggedInUserName" [routerLink]="['/login']" matTooltip="Login" mat-icon-button class="example-icon" aria-label="icon-button with login icon">
         <mat-icon>login</mat-icon>
       </button>
       <button *ngIf="loggedInUserName" (click)="openLogoutDialog()" matTooltip="Logout" mat-icon-button class="example-icon" aria-label="icon-button with login icon">

@@ -83,11 +83,11 @@ export class AuthSvcService {
       this.currentUser = userInfo
       return userInfo;
     } catch(err: any){
-      this._snackBar.open(`Errror getting current user ${err.error.status}-${err.error.message}`,'Close',{verticalPosition:'bottom', duration:3000});
+      this._snackBar.open('Errror getting current user: Invalid Token','Close',{verticalPosition:'bottom', duration:3000});
       return firstValueFrom(of(null))
     }
   } else{
-    this._snackBar.open(`Error getting current user`,'Close',{verticalPosition:'bottom'})
+    this._snackBar.open('Error getting current user: Not Authorized','Close',{verticalPosition:'bottom'})
     return firstValueFrom(of(null));
   }
   }
@@ -146,8 +146,8 @@ export class AuthSvcService {
   }
   async getSharedLists():Promise<Todolist[] | undefined>{
     let allLists = await this.GetTodoLists();
-    let sharedLists = allLists?.filter(list=>list.created_by !== this.currentUser?.id && list.shared_with.find(list=>list == this.currentUser?.email) !== this.currentUser?.email 
-      && list.public_list!==true);
+    let sharedLists = allLists?.filter(list=>
+      list.created_by !== this.currentUser?.id && !list.public_list);
     return sharedLists
   }
   async deleteToDoList(list:Todolist){
@@ -162,21 +162,18 @@ export class AuthSvcService {
     }
   }
 
-  async addNewItem (list_id:number,task:string,due_date:string|null){
+  async addNewItem (list_id:number,newItem:{task:string,due_date:string|null}){
     try {
-      let newItem = {
-        task:task,
-        due_date:due_date
-      }
       let result = await firstValueFrom(this.httpClient.post<Todolistitem>(`https://unfwfspring2024.azurewebsites.net/todo/${list_id}/item`,newItem,{headers:{'Authorization':`Bearer ${this.currentUserToken?.token}`}}))
-      const list = this.todoLists.find((list)=>list.id==list_id)
-
-      if(list) {
-      list.list_items.push(result)
-      }
+      // const list = this.todoLists.find((list)=>list.id==list_id)
+      
+      // // if(list) {
+      // // list.list_items.push(result)
+      // // }
       return result;
     } catch (err:any) {
-      this._snackBar.open(`Error adding new item ${err.error.status}-${err.error.message}`,'Close',{verticalPosition:'bottom', duration:3000});
+      console.log(err)
+      this._snackBar.open('Error adding new item: Unauthorized','Close',{verticalPosition:'bottom', duration:3000});
       return null;
     }
   }

@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, Input } from '@angular/core';
 import { Todolist } from '../model/todolist';
 import { AuthSvcService } from '../services/auth-svc.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -12,39 +12,36 @@ import { UserInfo } from '../model/user-info';
 })
 export class TodoListDialogComponent {
   myLists: Todolist[]=[];
-  list:Todolist;
+  // listId:number
+  @Input() list_id: number=0;
   task: string = '';
-  due_date:string='';
+  due_date:Date|null=null;
   currentUser:UserInfo|null=null;
+  taskInputFilled: boolean = false;
   //myLists: Todolist|undefined;
 
   constructor(private authSvc: AuthSvcService, public dialogRef: MatDialogRef<TodoListDialogComponent>,private snackbar:MatSnackBar,
-    @Inject(MAT_DIALOG_DATA) public data: { list: Todolist, userLists: Todolist[]} ) {
-      this.list = data.list;
-    this.myLists = data.userLists;
+    ){
+      console.log('Received listId from inject this.listid:', this.list_id);
   }
-  // async ngOnInit(){
-  //   if(this.authSvc.UserLoggedIn || this.currentUser){
-  //     let list = await this.authSvc.getMyLists()
-  //     // this.todoLists = this.authSvc.GetTodoLists()
-  //     // console.log(lists);
-  //     if (list)
-  //       this.myLists = list
-  //   }
-  // }
 
-  // addItem(list_id:number,itemTask:string,taskDue:string){
-    addItem(list_id:number,itemTask:string,taskDue:string){
+    addItem(){
     if(this.authSvc.UserLoggedIn){
-      this.authSvc.addNewItem(list_id, itemTask, taskDue)
+    //   const selectedList = this.myLists.find(list => list.id === this.listId);
+    // if (selectedList) {
+      const newItem = {
+        task: this.task,
+        due_date: this.due_date?.toISOString() || null
+      };
+      this.authSvc.addNewItem(this.list_id, newItem)
       .then(result => {
         if (result) {
-          // Item added successfully
-          // You can update the local list_items array if needed
-          const list = this.myLists.find(l => l.id === list_id);
-          if (list) {
-            list.list_items.push(result);
-          }
+          this.snackbar.open('Item added successfully', 'Close', { duration: 3000 });
+          this.dialogRef.close();
+          // const list = this.myLists.find(l => l.id === list_id);
+          // if (list) {
+          //   list.list_items.push(result);
+          // }
         } else {
           this.snackbar.open('Error adding new item', 'Close');
         }
@@ -52,18 +49,19 @@ export class TodoListDialogComponent {
       .catch(error => {
         this.snackbar.open(`Error adding new item: ${error}`, 'Close');
       });
+    // else {
+    //   this.snackbar.open('List not found', 'Close');
+    // }
   } else {
     this.snackbar.open('You are not logged in', 'Close');
   }
 }
 
-  deleteItem(item: any) {
+  deleteItem(list_id: any) {
     // Implement logic to delete an item from the list
-    // You can call a service method to update the list on the server
   }
 
   editList() {
     // Implement logic to edit the list title or other properties
-    // You can call a service method to update the list on the server
   }
 }
