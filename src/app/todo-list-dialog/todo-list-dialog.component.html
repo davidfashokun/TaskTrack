@@ -1,0 +1,29 @@
+<h2 mat-dialog-title>{{ list.title }}</h2>
+<mat-dialog-content>
+  <mat-list>
+    <mat-list-item *ngFor="let item of list.list_items">
+      <span>{{ item.task }}</span>
+      <button mat-icon-button (click)="deleteItem(item)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </mat-list-item>
+  </mat-list>
+  <mat-form-field>
+    <mat-label>Add Item</mat-label>
+    <input matInput [(ngModel)]="task" />
+  </mat-form-field>
+  <br>
+  <mat-form-field>
+    <mat-label>Choose a date</mat-label>
+    <input matInput [(ngModel)]="due_date"[matDatepicker]="picker">
+    <mat-hint>MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <!-- <button mat-button (click)="addItem(list.id,task,due_date)">Add Item</button> -->
+  <button mat-button (click)="addItem(list.id,task,due_date)">Add Item</button>
+  <button mat-button (click)="editList()">Edit List</button>
+  <button mat-button mat-dialog-close>Close</button>
+</mat-dialog-actions>

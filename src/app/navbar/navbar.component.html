@@ -6,15 +6,17 @@
 <!-- THE IDEA:
     PUT THE PERSONAL LISTS/SHARED LISTS/PUBLIC LISTS IN VIEWS FOLDER
     ADD NEW COMPONENTS NEW ITEM/NEW LIST AND CHANNGE NAVBAR ROUTING TO RESPECTIVE LINK
-    USE DIALOG FOR ADDING NEW LIST OR ITEMS
-    FIX LOGOUT FUNCTION TO SHOW LOGIN ICON ON NAVBAR AFTER
+    DO ERROR CHECKINGS FOR LISTS AND ITEM FUNCTIONALITY
+    ALSO ADD SUBSCRIPTIONS WHERE NEEDED
+    MAYBE USE MAT CARD TO SHOW SPECIFIC LISTS WHEN CLICKED ON THE MAT-NAV-LIST; IT WOULD HAVE ITS OWN SEPARATE COMPONENT(?)
+    THAT MAY SHOW ITEMS IF THEY ARE PRESENT (NOT NULL)
  -->
       <span class="example-spacer"></span>
-      <span *ngIf="loggedInUserName && userLoggedIn">{{this.loggedInUserName.name}}</span>
+      <span *ngIf="loggedInUserName">{{this.loggedInUserName.name}}</span>
       <button [routerLink]="['/']" matTooltip="Go home" mat-icon-button class="example-icon favorite-icon" aria-label="icon-button with home icon">
         <mat-icon>home</mat-icon>
       </button>
-      <button [routerLink]="['/register']" matTooltip="Register user" mat-icon-button class="example-icon" aria-label="con-button with person icon">
+      <button *ngIf="!loggedInUserName" [routerLink]="['/register']" matTooltip="Register user" mat-icon-button class="example-icon" aria-label="con-button with person icon">
         <mat-icon>person_add</mat-icon>
         </button>
         <!-- FIGURE OUT HOW TO IMPLEMENT IF USER IS LOGGED IN, REMOVE LOGIN ICON -->
@@ -24,13 +26,14 @@
       <button *ngIf="loggedInUserName" (click)="openLogoutDialog()" matTooltip="Logout" mat-icon-button class="example-icon" aria-label="icon-button with login icon">
         <mat-icon>logout</mat-icon>
       </button>
-      <button [routerLink]="['mylist']" matTooltip="View your todo lists" mat-icon-button class="example-icon"  aria-label="icon-button with lists icon">
+      <button *ngIf="loggedInUserName" [routerLink]="['mylist']" matTooltip="View your todo lists" mat-icon-button class="example-icon"  aria-label="icon-button with lists icon">
         <mat-icon>checklist_rtl</mat-icon>
       </button>
-      <button *ngIf="loggedInUserName" [routerLink]="['newlist']" matTooltip="Add todo list" mat-icon-button class="example-icon"  aria-label="icon-button with lists icon">
+      <button *ngIf="loggedInUserName" (click)="openNewListDialog()" matTooltip="Add todo list" mat-icon-button class="example-icon"  aria-label="icon-button with lists icon">
         <mat-icon>format_list_bulleted_add</mat-icon>
       </button>
-      <button [routerLink]="['sharedlist']" matTooltip="View your shared lists" mat-icon-button class="example-icon"  aria-label="icon-button with lists icon">
+      <button *ngIf="loggedInUserName" [routerLink]="['sharedlist']" matTooltip="View your shared lists" mat-icon-button class="example-icon"  aria-label="icon-button with lists icon">
         <mat-icon>inbox</mat-icon>
       </button>
     </mat-toolbar>
+    <!-- [routerLink]="['newlist']" -->

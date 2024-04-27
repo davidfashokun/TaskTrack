@@ -1,0 +1,14 @@
+<mat-progress-bar color="accent" *ngIf="todoLists.length==0" mode="indeterminate"></mat-progress-bar>
+<h2 class="public-list-header">Public Todo Lists</h2>
+<hr>
+
+<div>
+  <div *ngFor="let list of todoLists">
+    <mat-nav-list class="public-list-content">
+            <mat-list-item (click)="getListById(list.id)">
+                    <h4>{{ list.title }}</h4>
+        </mat-list-item>
+</mat-nav-list>
+    <mat-divider></mat-divider>
+  </div>
+</div>

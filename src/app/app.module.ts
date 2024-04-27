@@ -22,13 +22,18 @@ import { HttpClientModule, provideHttpClient, withInterceptors } from '@angular/
 import { bearertokenInterceptor } from './interceptor/bearertoken.interceptor';
 import { SharedlistComponent } from './sharedlist/sharedlist.component';
 import { TodolistitemComponent } from './todolistitem/todolistitem.component';
-import { TodolistComponent } from './todolist/todolist.component';
+import { TodolistComponent as PubliclistComponent } from './publiclist/publiclist.component';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatListModule} from '@angular/material/list';
 import { LogoutComponent } from './view/logout/logout.component';
 import { MatDialog,MatDialogRef,MatDialogActions,MatDialogClose,MatDialogTitle,MatDialogContent } from '@angular/material/dialog';
 import { NewItemComponent } from './new-item/new-item.component';
 import { NewListComponent } from './new-list/new-list.component';
+import { TodoListDialogComponent } from './todo-list-dialog/todo-list-dialog.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {provideNativeDateAdapter} from '@angular/material/core';
+import { MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { MylistComponent } from './mylist/mylist.component';
 
 @NgModule({
   declarations: [
@@ -38,10 +43,12 @@ import { NewListComponent } from './new-list/new-list.component';
     NavbarComponent,
     SharedlistComponent,
     TodolistitemComponent,
-    TodolistComponent,
+    PubliclistComponent,
     LogoutComponent,
     NewItemComponent,
     NewListComponent,
+    TodoListDialogComponent,
+    MylistComponent,
   ],
   imports: [
     BrowserModule,
@@ -64,10 +71,13 @@ import { NewListComponent } from './new-list/new-list.component';
     MatDialogClose,
     MatDialogContent,
     // MatDialogRef,
-    MatDialogTitle
+    MatDialogTitle,
+    MatDatepickerModule,
+    MatSlideToggleModule
   ],
   providers: [
-    provideAnimationsAsync()
+    provideAnimationsAsync(),
+    provideNativeDateAdapter()
     // provideHttpClient(withInterceptors([bearertokenInterceptor]))
   ],
   bootstrap: [AppComponent]

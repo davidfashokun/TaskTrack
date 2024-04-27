@@ -2,10 +2,11 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './view/login/login.component';
 import { RegisterComponent } from './view/register/register.component';
-import { TodolistComponent } from './todolist/todolist.component';
+import { TodolistComponent } from './publiclist/publiclist.component';
 import { SharedlistComponent } from './sharedlist/sharedlist.component';
 import { noauthGuard } from './guards/noauth.guard';
 import { NewListComponent } from './new-list/new-list.component';
+import { MylistComponent } from './mylist/mylist.component';
 
 const routes: Routes = [
   {
@@ -23,7 +24,7 @@ const routes: Routes = [
   {
     path:'mylist',
     canActivate:[noauthGuard],
-    component: TodolistComponent
+    component: MylistComponent
   },
   {
     canActivate:[noauthGuard],

@@ -6,6 +6,7 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { LogoutComponent } from '../view/logout/logout.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { NewListComponent } from '../new-list/new-list.component';
 
 @Component({
   selector: 'app-navbar',
@@ -15,7 +16,7 @@ import { Router } from '@angular/router';
 export class NavbarComponent {
 
   loggedInUserName:UserInfo|null = null;
-  userLoggedIn=false;
+  // userLoggedIn=false;
   
   constructor(private authSvc:AuthSvcService, private dialog: MatDialog, private router:Router) {
     this.authSvc.UserLoggedIn.subscribe(()=>{
@@ -26,13 +27,18 @@ export class NavbarComponent {
         this.authSvc.SetCurrentUser(data);
       });
 
-      this.authSvc.activeLogin.subscribe((loggedIn)=>{
-        this.userLoggedIn = loggedIn;
-      })
+      // this.authSvc.activeLogin.subscribe((loggedIn)=>{
+      //   this.userLoggedIn = loggedIn;
+      // })
     });
   }
   openLogoutDialog(): void {
     this.dialog.open(LogoutComponent, {
+      width: '300px',
+    });
+  }
+  openNewListDialog(): void {
+    this.dialog.open(NewListComponent, {
       width: '300px',
     });
   }

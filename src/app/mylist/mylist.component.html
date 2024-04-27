@@ -1,0 +1,16 @@
+<mat-progress-bar color="accent" *ngIf="myLists.length==0" mode="indeterminate"></mat-progress-bar>
+<h2 class="public-list-header">{{this.currentUser?.name}}'s Todo Lists</h2>
+<hr>
+<!-- (click)="getListById(list.id)" -->
+<div>
+  <div *ngFor="let list of myLists">
+    <mat-nav-list class="my-list-content">
+            <mat-list-item>
+                    <h4>{{ list.title }}<button (click)="deleteList()" mat-icon-button><mat-icon>delete</mat-icon></button>
+                     <button (click)="openNewItemDialog()" mat-icon-button><mat-icon>edit</mat-icon></button></h4>
+                    <h4>{{list.list_items}}</h4>
+        </mat-list-item>
+</mat-nav-list>
+    <mat-divider></mat-divider>
+  </div>
+</div>

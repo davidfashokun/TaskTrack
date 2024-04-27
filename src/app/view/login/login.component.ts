@@ -30,7 +30,6 @@ export class LoginComponent {
       if(userData!=null)
       {
         console.log(userData);
-        alert('Login successful!');
       }
     }
   }

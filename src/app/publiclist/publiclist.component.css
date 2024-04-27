@@ -1,0 +1,16 @@
+.public-list-content{
+    padding: 7px;
+    display: flex;
+    justify-content: space-between;
+    /* align-items: center; */
+}
+.public-list-header{
+    padding: 5px;
+}
+/* mat-icon{
+    justify-content: right; 
+} */
+  button {
+    color: #940000; /* Red color for the delete button */
+    margin-left: 10px; /* Adjust the margin as needed */
+  }

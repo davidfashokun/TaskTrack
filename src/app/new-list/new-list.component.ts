@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthSvcService } from '../services/auth-svc.service';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-new-list',
@@ -8,7 +10,10 @@ import { AuthSvcService } from '../services/auth-svc.service';
 })
 export class NewListComponent {
 
-  constructor(private authSvc:AuthSvcService){
+  title:string='';
+  isPublic=true;
+
+  constructor(private authSvc:AuthSvcService, private dialog:MatDialog){
 
   }
   AddNewTodoList(title: string, isPublic: boolean): void {
