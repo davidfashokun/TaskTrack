@@ -6,9 +6,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserInfo } from '../model/user-info';
 
 @Component({
-  selector: 'app-todo-list-dialog',
-  templateUrl: './todo-list-dialog.component.html',
-  styleUrl: './todo-list-dialog.component.css'
+  selector: 'app-newlistdialog',
+  templateUrl: './newlistdialog.component.html',
+  styleUrl: './newlistdialog.component.css'
 })
 export class TodoListDialogComponent {
   myLists: Todolist[]=[];

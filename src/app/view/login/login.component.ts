@@ -31,6 +31,7 @@ export class LoginComponent {
       {
         console.log(userData);
       }
+      this.router.navigate(['mylist']);
     }
   }
 }

@@ -29,7 +29,7 @@ import { LogoutComponent } from './view/logout/logout.component';
 import { MatDialog,MatDialogRef,MatDialogActions,MatDialogClose,MatDialogTitle,MatDialogContent } from '@angular/material/dialog';
 import { NewItemComponent } from './new-item/new-item.component';
 import { NewListComponent } from './new-list/new-list.component';
-import { TodoListDialogComponent } from './todo-list-dialog/todo-list-dialog.component';
+import { TodoListDialogComponent as NewlistdialogComponent } from './newlistdialog/newlistdialog.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {provideNativeDateAdapter} from '@angular/material/core';
 import { MatSlideToggleModule} from '@angular/material/slide-toggle';
@@ -47,7 +47,7 @@ import { MylistComponent } from './mylist/mylist.component';
     LogoutComponent,
     NewItemComponent,
     NewListComponent,
-    TodoListDialogComponent,
+    NewlistdialogComponent,
     MylistComponent,
   ],
   imports: [

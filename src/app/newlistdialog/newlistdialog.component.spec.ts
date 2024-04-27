@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TodoListDialogComponent } from './todo-list-dialog.component';
+import { TodoListDialogComponent } from './newlistdialog.component';
 
 describe('TodoListDialogComponent', () => {
   let component: TodoListDialogComponent;

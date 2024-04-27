@@ -113,7 +113,7 @@ export class AuthSvcService {
   }
   async GetTodoLists() {
     try {
-      if(this.currentUserToken){
+      if(this.currentUser){
       let allLists = await firstValueFrom(this.httpClient.get<Todolist[]>('https://unfwfspring2024.azurewebsites.net/todo/',{headers:{'Authorization':`Bearer ${this.currentUserToken?.token}`}}))
       // let lists = await firstValueFrom(this.httpClient.get<Todolist[]>('https://unfwfspring2024.azurewebsites.net/todo/'))
       for (let row of allLists) {
@@ -144,25 +144,31 @@ export class AuthSvcService {
     let myLists = allLists?.filter(list=>list.created_by == this.currentUser?.id)
     return myLists
   }
+  async getSharedLists():Promise<Todolist[] | undefined>{
+    let allLists = await this.GetTodoLists();
+    let sharedLists = allLists?.filter(list=>list.created_by !== this.currentUser?.id && list.shared_with.find(list=>list == this.currentUser?.email) !== this.currentUser?.email 
+      && list.public_list!==true);
+    return sharedLists
+  }
   async deleteToDoList(list:Todolist){
 
     try {
-    let selectedList = await firstValueFrom(this.httpClient.delete<Todolist>(`https://unfwfspring2024.azurewebsites.net/todo/'${list.id}`,{headers:{'Authorization':`Bearer ${this.currentUserToken?.token}`}}))
+    let selectedList = await firstValueFrom(this.httpClient.delete<Todolist>(`https://unfwfspring2024.azurewebsites.net/todo/${list.id}`,{headers:{'Authorization':`Bearer ${this.currentUserToken?.token}`}}))
     this.todoLists.splice(selectedList.id);
     this.router.navigate(['mylist'])
 
     }catch(err:any){
-  this._snackBar.open(`Error deleting list ${err.error.status}-${err.error.message}`,'Close',{verticalPosition:'bottom', duration:3000});
+  this._snackBar.open('Error deleting list','Close',{verticalPosition:'bottom', duration:3000});
     }
   }
 
-  async addNewItem (list_id:number,task:string,due_date:string){
+  async addNewItem (list_id:number,task:string,due_date:string|null){
     try {
       let newItem = {
         task:task,
         due_date:due_date
       }
-      let result = await firstValueFrom(this.httpClient.post<Todolistitem>('https://unfwfspring2024.azurewebsites.net/todo/:list_id/item',newItem,{headers:{'Authorization':`Bearer ${this.currentUserToken?.token}`}}))
+      let result = await firstValueFrom(this.httpClient.post<Todolistitem>(`https://unfwfspring2024.azurewebsites.net/todo/${list_id}/item`,newItem,{headers:{'Authorization':`Bearer ${this.currentUserToken?.token}`}}))
       const list = this.todoLists.find((list)=>list.id==list_id)
 
       if(list) {

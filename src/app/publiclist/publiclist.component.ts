@@ -4,7 +4,7 @@ import { UserInfo } from '../model/user-info';
 import { Todolist } from '../model/todolist';
 import { NewItemComponent } from '../new-item/new-item.component';
 import { MatDialog } from '@angular/material/dialog';
-import { TodoListDialogComponent } from '../todo-list-dialog/todo-list-dialog.component';
+import { TodoListDialogComponent } from '../newlistdialog/newlistdialog.component';
 
 @Component({
   selector: 'app-publiclist',
@@ -25,13 +25,13 @@ export class TodolistComponent implements OnInit{
   // this.currentUser = this.authSvc.currentUser;
     //this.todoLists = this.authSvc.currentTodoList
   // this.loggedIn = this.authSvc.activeLogin
-  if(this.authSvc.UserLoggedIn || this.currentUser){
+  // if(this.authSvc.UserLoggedIn || this.currentUser){
     let lists = await this.authSvc.getPublicLists()
     // this.todoLists = this.authSvc.GetTodoLists()
     console.log(lists);
     if (lists)
       this.todoLists = lists
-  }
+  // }
   }
   
   // addItem() {

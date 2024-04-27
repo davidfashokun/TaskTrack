@@ -6,8 +6,8 @@
   <div *ngFor="let list of myLists">
     <mat-nav-list class="my-list-content">
             <mat-list-item>
-                    <h4>{{ list.title }}<button (click)="deleteList()" mat-icon-button><mat-icon>delete</mat-icon></button>
-                     <button (click)="openNewItemDialog()" mat-icon-button><mat-icon>edit</mat-icon></button></h4>
+                    <h4>{{ list.title }}<button (click)="deleteList(list.id)" mat-icon-button><mat-icon>delete</mat-icon></button>
+                     <button (click)="openNewItemDialog()" mat-icon-button><mat-icon>add_circle</mat-icon></button></h4>
                     <h4>{{list.list_items}}</h4>
         </mat-list-item>
 </mat-nav-list>
