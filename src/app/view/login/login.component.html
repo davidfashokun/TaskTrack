@@ -1,34 +1,3 @@
-  <!-- <mat-card class="card">
-    <mat-card-header>
-      <div mat-card-avatar class="example-header-image"></div>
-      <mat-card-title>Account Login</mat-card-title>  
-    </mat-card-header>
-    <mat-card-content>
-        <form class="loginForm">
-            <mat-form-field class="example-full-width">
-              <mat-label>Email</mat-label>
-              <input type="email" matInput [formGroup]="loginForm" placeholder="Ex. pat@example.com">
-                <mat-error *ngIf="loginForm.hasError">Please enter a valid email address</mat-error>
-              @if (loginForm.hasError('required')) {
-                <mat-error>Email is <strong>required</strong></mat-error>
-              }
-            </mat-form-field>
-            <mat-form-field class="example-full-width">
-                <mat-label>Password</mat-label>
-                <input type="text" matInput [formGroup]="loginForm" placeholder="jsmith">
-                
-                @if (loginForm.hasError('required')) {
-                  <mat-error>Name is <strong>required</strong></mat-error>
-                }
-            </mat-form-field>
-        </form>
-        <span *ngIf="errorMessage" class="error">{{errorMessage}}</span>
-  </mat-card-content>
-      <mat-card-actions>
-          <button type="submit" (click)="LoginUser()" mat-raised-button color="primary">Login</button>
-      </mat-card-actions> 
-</mat-card> -->
-<!-- [formControl]="emailFormControl" -->
 <mat-card class="card">
     <mat-card-header>
       <div mat-card-avatar class="example-header-image"></div>
@@ -55,8 +24,9 @@
             </mat-form-field>
             </div>
         </form>
+        <span *ngIf="errorMessage" class="error">{{errorMessage}}</span>
     </mat-card-content>
       <mat-card-actions>
-          <button (click)="LoginUser()" mat-raised-button color="primary">Login</button>
+          <button (click)="LoginUser()" [disabled]="emailFormControl.invalid && pwdFormControl.invalid" mat-raised-button color="primary">Login</button>
       </mat-card-actions> 
 </mat-card>

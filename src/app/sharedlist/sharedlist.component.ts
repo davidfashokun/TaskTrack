@@ -50,24 +50,40 @@ export class SharedlistComponent {
       this.snackbar.open('List not found','Close');
     }
   }
-  // deleteList(listId: number) {
-  //   if (this.authSvc.UserLoggedIn) {
-  //     const selectedList = this.myLists.find(list => list.id === listId);
-  //     if (selectedList) {
-  //       this.authSvc.deleteToDoList(selectedList)
-  //         .then(() => {
-  //           this.myLists = this.myLists.filter(list => list.id !== listId);
-  //           this.snackbar.open('List deleted successfully', 'Close', { duration: 3000 });
-  //         })
-  //         .catch(error => {
-  //           this.snackbar.open(`Error deleting list: ${error}`, 'Close', { duration: 3000 });
-  //         });
-  //     } else {
-  //       this.snackbar.open('List not found', 'Close', { duration: 3000 });
-  //     }
-  //   } else {
-  //     this.snackbar.open('You must be logged in to delete a list', 'Close', { duration: 3000 });
+  deleteSharedList(listId: number) {
+    if (!this.authSvc.currentUser || !this.authSvc.UserLoggedIn) {
+      this.snackbar.open('You must be an owner to delete a list', 'Close', { duration: 3000 });
+      return;
+    }
+  
+    const selectedList = this.lists.find(list => list.id === listId);
+
+    if (!selectedList) {
+      this.snackbar.open('List not found', 'Close', { duration: 3000 });
+      return;
+    }
+
+    // if (!this.isListSharedWithUser(selectedList)) {
+    //   this.snackbar.open('You do not have permission to delete this list', 'Close', { duration: 3000 });
+    //   return;
+    // }
+    console.log(selectedList.list_items)
+    // if (selectedList.shared_with.find(user=>user.email==this.currentUser?.email)?.email == this.currentUser?.email) {
+    this.authSvc.deleteSharedToDoList(selectedList,this.currentUser?.email)
+    .then(() => {
+    this.lists = this.lists.filter(list => list.id !== listId);
+    this.snackbar.open('List deleted successfully', 'Close', { duration: 3000 });
+    })
+    .catch(error => {
+    this.snackbar.open(`Error deleting list: ${error}`, 'Close', { duration: 3000 });
+    });
   //   }
+  // else {
+  //   this.snackbar.open('Not Authorized','Close', {duration:3000})
   // }
+  }
+  // isListSharedWithUser(list: Todolist): boolean {
+  //   return !!list.shared_with.some(shareUser => shareUser.email === this.currentUser?.email);
+  // }  
 
 }

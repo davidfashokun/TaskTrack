@@ -60,8 +60,4 @@ export class TodoListDialogComponent {
   deleteItem(list_id: any) {
     // Implement logic to delete an item from the list
   }
-
-  editList() {
-    // Implement logic to edit the list title or other properties
-  }
 }

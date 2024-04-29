@@ -31,7 +31,10 @@ export class LoginComponent {
       {
         console.log(userData);
       }
-      this.router.navigate(['mylist']);
+      // this.router.navigate(['mylist']);
     }
+    // else {
+    //   this.errorMessage = "Invalid Username or Password"
+    // }
   }
 }

@@ -1,0 +1,11 @@
+<h2 mat-dialog-title>Share List</h2>
+<mat-dialog-content>
+  <mat-form-field>
+    <mat-label>Email Address</mat-label>
+    <input matInput [(ngModel)]="email" />
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="shareList()" [disabled]="!email">Share</button>
+  <button mat-button mat-dialog-close>Cancel</button>
+</mat-dialog-actions>

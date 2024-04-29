@@ -37,6 +37,9 @@ export class AuthSvcService {
     try
     {
       let userToken = await firstValueFrom(this.httpClient.post<UserToken>('https://unfwfspring2024.azurewebsites.net/user/login',null,{headers:httpHeaders}));
+      // if (userToken.status == 200){
+
+      // }
       this.currentUserToken = userToken;
       localStorage.setItem('currentUserToken',JSON.stringify(userToken));
       this.UserLoggedIn.emit(email);
@@ -45,10 +48,8 @@ export class AuthSvcService {
     }
     catch(err:any)
     {
-    
-      this._snackBar.open(`Login failed! Error: ${err.error.status}-${err.error.message}`,'Close',{verticalPosition:'top',duration:3000});
-      return firstValueFrom(of(null));
-    
+      this._snackBar.open(`Invalid Email or Password`,'Close',{verticalPosition:'top',duration:3000});
+      return null;
     }
   }
 
@@ -83,11 +84,11 @@ export class AuthSvcService {
       this.currentUser = userInfo
       return userInfo;
     } catch(err: any){
-      this._snackBar.open('Errror getting current user: Invalid Token','Close',{verticalPosition:'bottom', duration:3000});
+      this._snackBar.open('Session expired: Invalid Token','Close',{verticalPosition:'bottom', duration:3000});
       return firstValueFrom(of(null))
     }
   } else{
-    this._snackBar.open('Error getting current user: Not Authorized','Close',{verticalPosition:'bottom'})
+    // this._snackBar.open('Error getting current user: Not Authorized','Close',{verticalPosition:'bottom'})
     return firstValueFrom(of(null));
   }
   }
@@ -113,7 +114,7 @@ export class AuthSvcService {
   }
   async GetTodoLists() {
     try {
-      if(this.currentUser){
+      if(this.currentUserToken){
       let allLists = await firstValueFrom(this.httpClient.get<Todolist[]>('https://unfwfspring2024.azurewebsites.net/todo/',{headers:{'Authorization':`Bearer ${this.currentUserToken?.token}`}}))
       // let lists = await firstValueFrom(this.httpClient.get<Todolist[]>('https://unfwfspring2024.azurewebsites.net/todo/'))
       for (let row of allLists) {
@@ -125,10 +126,9 @@ export class AuthSvcService {
       let onlyPublicLists = await firstValueFrom(this.httpClient.get<Todolist[]>('https://unfwfspring2024.azurewebsites.net/todo/'))
       return onlyPublicLists;
     }
-      // return this.todoLists;
       
     } catch(err: any){
-      this._snackBar.open(`Error getting todoLists ${err.error.status}-${err.error.message}`,'Close',{verticalPosition:'bottom', duration:3000});
+      this._snackBar.open(`Error getting todoLists: ${err.error.message}`,'Close',{verticalPosition:'bottom', duration:3000});
       return firstValueFrom(of(null))
     }
   }
@@ -165,11 +165,11 @@ export class AuthSvcService {
   async addNewItem (list_id:number,newItem:{task:string,due_date:string|null}){
     try {
       let result = await firstValueFrom(this.httpClient.post<Todolistitem>(`https://unfwfspring2024.azurewebsites.net/todo/${list_id}/item`,newItem,{headers:{'Authorization':`Bearer ${this.currentUserToken?.token}`}}))
-      // const list = this.todoLists.find((list)=>list.id==list_id)
+      const list = this.todoLists.find((list)=>list.id==list_id)
       
-      // // if(list) {
-      // // list.list_items.push(result)
-      // // }
+      // if(list) {
+      // list.list_items.push(result)
+      // }
       return result;
     } catch (err:any) {
       console.log(err)
@@ -177,11 +177,60 @@ export class AuthSvcService {
       return null;
     }
   }
+  async shareList(listId: number, email: string) {
+    try {
+      // const recipientExists = await this.checkUserExistsByEmail(email);
+      // if (!recipientExists) {
+      //   console.error('Recipient user does not exist');
+      //   this._snackBar.open('Recipient user does not exist','Close');
+      //   return false;
+      // }
+      let response = await firstValueFrom(
+        this.httpClient.post<Todolist>(`https://unfwfspring2024.azurewebsites.net/todo/${listId}/share`, { email }, {headers:{'Authorization':`Bearer ${this.currentUserToken?.token}`}}));
+        response.shared_with.push({email:email})
+        this.todoLists.push(response)
+        
+        // list?.shared_with.push({email:email})
+        //FIND OUT HOW TO POPULATE THE SHARED WITH WITH THE SHARED USER EMAIL
+      return response ? true : false;
+    }
+    catch (err: any) {
+      console.error('Error sharing list:', err);
+      return false;
+    }
+  }
+  async deleteSharedToDoList(list:Todolist,recipient_email:string|undefined){
 
+    try {
+    let selectedList = await firstValueFrom(this.httpClient.delete<Todolist>(`https://unfwfspring2024.azurewebsites.net/todo/${list.id}/share/${recipient_email}`,{headers:{'Authorization':`Bearer ${this.currentUserToken?.token}`}}))
+    this.todoLists.splice(selectedList.id);
+    this.router.navigate(['mylist'])
+
+    }catch(err:any){
+  this._snackBar.open('Error deleting list','Close',{verticalPosition:'bottom', duration:3000});
+    }
+  }
+  // async checkUserExistsByEmail(email: string) {
+  //   try {
+  //     let response = await this.httpClient.get<UserInfo>(`https://unfwfspring2024.azurewebsites.net/user/`);
+  //     return response;
+  //   } catch (err) {
+  //     console.error('Error checking user existence:', err);
+  //     return false;
+  //   }
+  // }
+  isListExistsAndOwned(listId: number): boolean {
+    const list = this.todoLists.find(list => list.id === listId);
+    if (list && (list.created_by === this.currentUser?.id || this.UserLoggedIn)) {
+      return true;
+    }
+  
+    return false;
+  }
   logout() {
     localStorage.removeItem('currentUserToken');
     this.currentUserToken = null;
     this.UserLoggedIn.next("")
-    this.router.navigate(['login'])
+    this.router.navigate(['publiclist'])
   }
 }

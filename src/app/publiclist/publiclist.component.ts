@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { AuthSvcService } from '../services/auth-svc.service';
 import { UserInfo } from '../model/user-info';
 import { Todolist } from '../model/todolist';
-import { NewItemComponent } from '../new-item/new-item.component';
 import { MatDialog } from '@angular/material/dialog';
 import { TodoListDialogComponent } from '../newlistdialog/newlistdialog.component';
 

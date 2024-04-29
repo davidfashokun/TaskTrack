@@ -11,7 +11,7 @@ export const noauthGuard: CanActivateFn = (route, state) => {
     return true;
   }
   else {
-    alert.open('You must be logged in to view your lists!','Close', {verticalPosition:'bottom',duration:4000,})
+    alert.open('You must be logged in to view lists!','Close', {verticalPosition:'bottom',duration:4000,})
     router.navigate(['/login'])
     return false;
 

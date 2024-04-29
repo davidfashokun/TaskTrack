@@ -5,6 +5,7 @@ import { UserInfo } from '../model/user-info';
 import { Todolist } from '../model/todolist';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TodoListDialogComponent } from '../newlistdialog/newlistdialog.component';
+import { ShareListDialogComponent } from '../share-list-dialog/share-list-dialog.component';
 
 @Component({
   selector: 'app-mylist',
@@ -30,7 +31,6 @@ export class MylistComponent {
   try {
   if(this.authSvc.UserLoggedIn && this.currentUser){
     let lists = await this.authSvc.getMyLists()
-    // this.todoLists = this.authSvc.GetTodoLists()
     console.log(lists);
     if (lists)
       this.myLists = lists
@@ -56,7 +56,7 @@ export class MylistComponent {
         this.snackbar.open('List not found', 'Close', { duration: 3000 });
       }
     } else {
-      this.snackbar.open('You must be logged in to delete a list', 'Close', { duration: 3000 });
+      this.snackbar.open('You must be the creator to delete a list', 'Close', { duration: 3000 });
     }
   }
   openNewItemDialog(list_id: number) {
@@ -73,6 +73,12 @@ export class MylistComponent {
     } else {
       this.snackbar.open('List not found','Close');
     }
+  }
+  openShareListDialog(listId: number) {
+    console.log('Received listId from mylist:', listId);
+    const dialogRef = this.dialog.open(ShareListDialogComponent, {
+      data: { listId }
+    });
   }
 
   getListById(list_id:number) {

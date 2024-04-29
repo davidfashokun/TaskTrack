@@ -8,6 +8,7 @@
             <mat-list-item>
                     <h4>{{ list.title }}<button (click)="openNewItemDialog(list.id)" matTooltip="Add Item" mat-icon-button><mat-icon>add_circle</mat-icon></button>
                       <button (click)="deleteList(list.id)" matTooltip="Delete List" mat-icon-button><mat-icon>delete</mat-icon></button>
+                      <button mat-icon-button matTooltip="Share List" (click)="openShareListDialog(list.id)"><mat-icon>share</mat-icon></button>
                     </h4>
                     <h4>{{list.list_items}}</h4>
         </mat-list-item>
